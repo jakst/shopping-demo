@@ -2,6 +2,11 @@ import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
 
+const LazyMainPage = React.lazy(() => import('./pages/main.page'))
+const LazyProductPage = React.lazy(() => import('./pages/product.page'))
+const LazyCheckoutPage = React.lazy(() => import('./pages/checkout.page'))
+const Lazy404Page = React.lazy(() => import('./pages/404.page'))
+
 export function App() {
 	return (
 		<div>
@@ -12,29 +17,10 @@ export function App() {
 			<BrowserRouter>
 				<Suspense fallback={<LoadingMessage />}>
 					<Switch>
-						<Route exact path="/">
-							<div>
-								<h2>Main page</h2>
-							</div>
-						</Route>
-
-						<Route path="/product/:id">
-							<div>
-								<h2>Product page</h2>
-							</div>
-						</Route>
-
-						<Route path="/checkout">
-							<div>
-								<h2>Checkout page</h2>
-							</div>
-						</Route>
-
-						<Route path="/">
-							<div>
-								<h2>404 not found</h2>
-							</div>
-						</Route>
+						<Route exact path="/" component={LazyMainPage} />
+						<Route path="/product/:id" component={LazyProductPage} />
+						<Route path="/checkout" component={LazyCheckoutPage} />
+						<Route path="/" component={Lazy404Page} />
 					</Switch>
 				</Suspense>
 			</BrowserRouter>
@@ -43,5 +29,5 @@ export function App() {
 }
 
 function LoadingMessage() {
-	return <div>Laddar</div>
+	return <div>Loading...</div>
 }
