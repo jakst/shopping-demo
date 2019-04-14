@@ -1,5 +1,6 @@
 import React from 'react'
 import { match } from 'react-router'
+import styled, { css } from 'styled-components'
 import { getProductById, Product } from '../api/api'
 import { useCart } from '../cart/cart.context'
 
@@ -27,18 +28,50 @@ export default function ProductPage({ match }: Props) {
 	if (!product) return <div>Loading item...</div>
 
 	return (
-		<div>
+		<Wrapper>
 			<h2>{product.name}</h2>
 			<h3>{product.price} kr</h3>
 			Manufacturer: {product.brand}
 			<br />
-			{product.available ? 'In stock 👍' : 'Not available 👎'}
-			<br />
 			Weight: {product.weight} kg
 			<br />
-			<button onClick={() => addToCart(product)} disabled={!product.available}>
-				Add to cart
-			</button>
-		</div>
+			<AddToCart
+				onClick={() => addToCart(product)}
+				disabled={!product.available}
+			>
+				{product.available ? 'In stock, buy now! 👍' : 'Not stock left 👎'}
+			</AddToCart>
+		</Wrapper>
 	)
 }
+
+const Wrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	max-width: 500px;
+	margin: 0 auto;
+	padding: 16px;
+	box-shadow: 1px 1px 3px #ddd;
+`
+
+const disabledStyle = css`
+	background-color: #eee;
+	color: #666;
+`
+
+const enabledStyle = css`
+	background-color: green;
+	color: white;
+	cursor: pointer;
+`
+
+const AddToCart = styled.button`
+	height: 50px;
+	width: 150px;
+	align-self: flex-end;
+
+	font-weight: bold;
+	border: none;
+
+	${props => (props.disabled ? disabledStyle : enabledStyle)};
+`
