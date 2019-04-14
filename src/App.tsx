@@ -1,11 +1,24 @@
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
+import { fakeLatency } from './latency'
 
-const LazyMainPage = React.lazy(() => import('./pages/main.page'))
-const LazyProductPage = React.lazy(() => import('./pages/product.page'))
-const LazyCheckoutPage = React.lazy(() => import('./pages/checkout.page'))
-const Lazy404Page = React.lazy(() => import('./pages/404.page'))
+const LazyMainPage = React.lazy(async () => {
+	await fakeLatency()
+	return import('./pages/main.page')
+})
+const LazyProductPage = React.lazy(async () => {
+	await fakeLatency()
+	return import('./pages/product.page')
+})
+const LazyCheckoutPage = React.lazy(async () => {
+	await fakeLatency()
+	return import('./pages/checkout.page')
+})
+const Lazy404Page = React.lazy(async () => {
+	await fakeLatency()
+	return import('./pages/404.page')
+})
 
 export function App() {
 	return (
