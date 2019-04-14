@@ -1,5 +1,5 @@
 import React from 'react'
-import { Product } from './api/api'
+import { Product } from '../api/api'
 
 type Props = {
 	children: React.ReactNode
@@ -7,11 +7,13 @@ type Props = {
 
 type Cart = {
 	totalItems: number
+	value: number
 	items: Map<number, CartItem>
 }
 
 type CartItem = {
 	quantity: number
+	value: number
 	product: Product
 }
 
@@ -22,16 +24,28 @@ export function Cart({ children }: Props) {
 		(product: Product) => {
 			if (!product.available) return
 			const currentCartItem = cart.items.get(product.id)
+			const itemQuantity = currentCartItem ? currentCartItem.quantity + 1 : 1
 
 			const newCartItem = {
-				quantity: currentCartItem ? currentCartItem.quantity + 1 : 1,
+				quantity: itemQuantity,
+				value: itemQuantity * Number(product.price),
 				product,
 			}
 
-			setCart(cart => ({
-				totalItems: cart.totalItems + 1,
-				items: new Map(cart.items).set(product.id, newCartItem),
-			}))
+			const cartItems = new Map(cart.items).set(product.id, newCartItem)
+			const [cartQuantity, cartValue] = Array.from(cartItems.values()).reduce(
+				(previous, item) => [
+					previous[0] + item.quantity,
+					previous[1] + item.value,
+				],
+				[0, 0]
+			)
+
+			setCart({
+				totalItems: cartQuantity,
+				value: cartValue,
+				items: cartItems,
+			})
 		},
 		[cart]
 	)
@@ -50,6 +64,7 @@ export function Cart({ children }: Props) {
 
 const emptyCart: Cart = {
 	totalItems: 0,
+	value: 0,
 	items: new Map(),
 }
 

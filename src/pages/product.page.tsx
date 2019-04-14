@@ -1,7 +1,7 @@
 import React from 'react'
 import { match } from 'react-router'
 import { getProductById, Product } from '../api/api'
-import { useCart } from '../cart'
+import { useCart } from '../cart/cart.context'
 
 type Props = {
 	match: match<{ id: string }>
