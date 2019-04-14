@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
+import styled from 'styled-components'
 import { Cart } from './cart'
 import { fakeLatency } from './latency'
 
@@ -23,7 +24,7 @@ const Lazy404Page = React.lazy(async () => {
 
 export function App() {
 	return (
-		<div>
+		<Wrapper>
 			<a href="/">
 				<h1>Shopping.com</h1>
 			</a>
@@ -40,10 +41,14 @@ export function App() {
 					</Cart>
 				</Suspense>
 			</BrowserRouter>
-		</div>
+		</Wrapper>
 	)
 }
 
 function LoadingMessage() {
 	return <div>Loading...</div>
 }
+
+const Wrapper = styled.div`
+	padding: 10px;
+`
