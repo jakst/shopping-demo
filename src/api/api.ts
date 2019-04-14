@@ -16,6 +16,11 @@ export type Product = {
 	options: Options
 }
 
+export async function getProducts() {
+	await fakeLatency()
+	return data.items as Product[]
+}
+
 export async function getProductById(id: number) {
 	await fakeLatency()
 	return data.items.find(item => item.id === id) as Product
