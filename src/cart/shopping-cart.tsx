@@ -4,15 +4,15 @@ import styled, { css } from 'styled-components'
 import { useCart } from './cart.context'
 
 export function ShoppingCart() {
-	const { cart } = useCart()
+	const { cartQuantity, cartValue } = useCart()
 
 	return (
 		<Wrapper>
-			{cart.totalItems > 1 && `${cart.totalItems} items, ${cart.value} kr`}
-			{cart.totalItems === 1 && `${cart.totalItems} item, ${cart.value} kr`}
+			{cartQuantity > 1 && `${cartQuantity} items, ${cartValue} kr`}
+			{cartQuantity === 1 && `${cartQuantity} item, ${cartValue} kr`}
 
-			{cart.totalItems > 0 && <Link to="/checkout">Checkout</Link>}
-			{cart.totalItems === 0 && <Inactive>Checkout</Inactive>}
+			{cartQuantity > 0 && <Link to="/checkout">Checkout</Link>}
+			{cartQuantity === 0 && <Inactive>Checkout</Inactive>}
 		</Wrapper>
 	)
 }
