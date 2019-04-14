@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router'
 import { BrowserRouter } from 'react-router-dom'
+import { Cart } from './cart'
 import { fakeLatency } from './latency'
 
 const LazyMainPage = React.lazy(async () => {
@@ -29,12 +30,14 @@ export function App() {
 
 			<BrowserRouter>
 				<Suspense fallback={<LoadingMessage />}>
-					<Switch>
-						<Route exact path="/" component={LazyMainPage} />
-						<Route path="/product/:id" component={LazyProductPage} />
-						<Route path="/checkout" component={LazyCheckoutPage} />
-						<Route path="/" component={Lazy404Page} />
-					</Switch>
+					<Cart>
+						<Switch>
+							<Route exact path="/" component={LazyMainPage} />
+							<Route path="/product/:id" component={LazyProductPage} />
+							<Route path="/checkout" component={LazyCheckoutPage} />
+							<Route path="/" component={Lazy404Page} />
+						</Switch>
+					</Cart>
 				</Suspense>
 			</BrowserRouter>
 		</div>
