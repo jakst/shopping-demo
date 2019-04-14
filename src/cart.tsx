@@ -20,6 +20,7 @@ export function Cart({ children }: Props) {
 
 	const addToCart = React.useCallback(
 		(product: Product) => {
+			if (!product.available) return
 			const currentCartItem = cart.items.get(product.id)
 
 			const newCartItem = {

@@ -36,7 +36,9 @@ export default function ProductPage({ match }: Props) {
 			<br />
 			Weight: {product.weight} kg
 			<br />
-			<button onClick={() => addToCart(product)}>Add to cart</button>
+			<button onClick={() => addToCart(product)} disabled={!product.available}>
+				Add to cart
+			</button>
 		</div>
 	)
 }
