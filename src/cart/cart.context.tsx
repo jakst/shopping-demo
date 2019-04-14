@@ -1,5 +1,6 @@
 import React from 'react'
 import { Product } from '../api/api'
+import { usePersistentState } from './persistent-state.hook'
 
 type Props = {
 	children: React.ReactNode
@@ -12,7 +13,10 @@ type CartItem = {
 }
 
 export function Cart({ children }: Props) {
-	const [cartItems, setCartItems] = React.useState<CartItem[]>([])
+	const [cartItems, setCartItems] = usePersistentState<CartItem[]>(
+		'shopping-cart',
+		[]
+	)
 
 	const addToCart = React.useCallback(
 		(product: Product) => {
