@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Cart } from './cart'
 import { fakeLatency } from './latency'
@@ -25,11 +25,11 @@ const Lazy404Page = React.lazy(async () => {
 export function App() {
 	return (
 		<Wrapper>
-			<a href="/">
-				<h1>Shopping.com</h1>
-			</a>
-
 			<BrowserRouter>
+				<Link to="/">
+					<h1>Shopping.com</h1>
+				</Link>
+
 				<Suspense fallback={<LoadingMessage />}>
 					<Cart>
 						<Switch>
