@@ -27,7 +27,9 @@ export function Cart({ children }: Props) {
 			const newCartItem = {
 				product,
 				quantity,
-				value: quantity * Number(product.price),
+				get value() {
+					return this.quantity * Number(this.product.price)
+				},
 			}
 
 			setCartItems([
