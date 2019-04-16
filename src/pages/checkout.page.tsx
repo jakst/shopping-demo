@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useCart } from '../cart/cart.context'
 
 export default function CheckoutPage() {
-	const { cartItems } = useCart()
+	const { cartItems, cartValue } = useCart()
 
 	if (!cartItems.length)
 		return (
@@ -25,6 +25,8 @@ export default function CheckoutPage() {
 					</div>
 				</Item>
 			))}
+
+			<Sum>Total: {cartValue} kr</Sum>
 		</Wrapper>
 	)
 }
@@ -41,4 +43,11 @@ const Wrapper = styled.div`
 const Item = styled.div`
 	display: flex;
 	justify-content: space-between;
+`
+
+const Sum = styled.div`
+	border-top: 2px solid #333;
+	padding-top: 8px;
+	margin: 8px 0 0;
+	text-align: right;
 `
