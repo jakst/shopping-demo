@@ -39,7 +39,7 @@ export default function ProductPage({ match }: Props) {
 				onClick={() => addToCart(product)}
 				disabled={!product.available}
 			>
-				{product.available ? 'In stock, buy now! 👍' : 'Not stock left 👎'}
+				{product.available ? 'In stock, buy now! 👍' : 'No stock left 👎'}
 			</AddToCart>
 		</Wrapper>
 	)
