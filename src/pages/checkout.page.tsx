@@ -27,8 +27,17 @@ export default function CheckoutPage() {
 
 				return (
 					<Item key={`${item.product.id}${color}${option}`}>
-						<div style={{ width: 250 }}>
-							{item.product.name}, {color} {option && `, ${option}`}
+						<div
+							style={{
+								width: 250,
+								display: 'flex',
+								flexDirection: 'column',
+							}}
+						>
+							<div style={{ fontWeight: 'bold' }}>{item.product.name}</div>
+							<div>
+								{color} {option && `, ${option}`}
+							</div>
 						</div>
 
 						<div style={{ width: 80, textAlign: 'right' }}>
@@ -71,6 +80,7 @@ const Wrapper = styled.div`
 const Item = styled.div`
 	display: flex;
 	justify-content: space-between;
+	margin-bottom: 16px;
 `
 
 const Sum = styled.div`
