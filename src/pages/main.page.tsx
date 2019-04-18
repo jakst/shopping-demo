@@ -1,17 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { getProducts, Product } from '../api/api'
+import { getProducts } from '../api/api'
+import { useFetch } from '../fetch.hook'
 
 export default function MainPage() {
-	const [products, setProducts] = React.useState<Product[]>([])
-
-	const fetchProducts = React.useCallback(async () => {
-		const fetchedProducts = await getProducts()
-		setProducts([...fetchedProducts])
-	}, [])
-
-	React.useEffect(() => void fetchProducts(), [fetchProducts])
+	const { data: products } = useFetch([], getProducts)
 
 	if (!products.length) return <div>Loading products...</div>
 

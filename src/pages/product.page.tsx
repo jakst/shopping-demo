@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { match } from 'react-router'
 import styled, { css } from 'styled-components'
-import { getProductById, Product } from '../api/api'
+import { getProductById } from '../api/api'
 import { useCart } from '../cart/cart.context'
 import { OptionsSelector } from '../components/options-selector'
+import { useFetch } from '../fetch.hook'
 
 type Props = {
 	match: match<{ id: string }>
@@ -11,8 +12,10 @@ type Props = {
 
 export default function ProductPage({ match }: Props) {
 	const productId = match.params.id
-	const [product, setProduct] = React.useState<Product>()
-	const [error, setError] = React.useState(false)
+	const fetchFn = React.useCallback(() => getProductById(Number(productId)), [
+		productId,
+	])
+	const { data: product, error } = useFetch(undefined, fetchFn)
 	const [adding, setAdding] = React.useState(false)
 	const { addToCart } = useCart()
 	const [selectedOptions, setSelectedOptions] = React.useState({
@@ -20,21 +23,10 @@ export default function ProductPage({ match }: Props) {
 		subOption: 0,
 	})
 
-	useEffect(() => {
+	React.useEffect(() => {
 		const timer = setTimeout(() => setAdding(false), Math.random() * 800 + 700)
 		return () => clearTimeout(timer)
 	}, [adding])
-
-	const fetchProduct = React.useCallback(async () => {
-		setError(false)
-		const fetchedProduct = await getProductById(Number(productId))
-
-		if (fetchedProduct) {
-			setProduct(fetchedProduct)
-		} else setError(true)
-	}, [productId])
-
-	React.useEffect(() => void fetchProduct(), [fetchProduct])
 
 	if (error) return <div>Could not find product with id "{productId}".</div>
 	if (!product) return <div>Loading item...</div>
