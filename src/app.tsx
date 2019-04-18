@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router'
 import { BrowserRouter, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Cart } from './cart/cart.context'
-import { ShoppingCart } from './cart/shopping-cart'
+import { ShoppingCart } from './components/shopping-cart'
 import { fakeLatency } from './latency'
 
 const LazyMainPage = React.lazy(async () => {

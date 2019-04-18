@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
-import { useCart } from './cart.context'
+import { useCart } from '../cart/cart.context'
 
 export function ShoppingCart() {
 	const { cartQuantity, cartValue } = useCart()
