@@ -17,14 +17,25 @@ export default function CheckoutPage() {
 
 	return (
 		<Wrapper>
-			{cartItems.map(item => (
-				<Item key={item.product.id}>
-					<div>{item.product.name}</div>
-					<div>
-						{item.quantity} x {item.product.price} = {item.value} kr
-					</div>
-				</Item>
-			))}
+			{cartItems.map(item => {
+				const { color, subOption } = item.product.options[item.color]
+				const option =
+					(subOption &&
+						typeof item.subOption !== 'undefined' &&
+						`${subOption.values[item.subOption]} ${subOption.suffix}`) ||
+					''
+
+				return (
+					<Item key={`${item.product.id}${color}${option}`}>
+						<div>
+							{item.product.name}, {color} {option && `, ${option}`}
+						</div>
+						<div>
+							{item.quantity} x {item.product.price} = {item.value} kr
+						</div>
+					</Item>
+				)
+			})}
 
 			<Sum>Total: {cartValue} kr</Sum>
 		</Wrapper>

@@ -10,6 +10,8 @@ type CartItem = {
 	product: Product
 	quantity: number
 	value: number
+	color: number
+	subOption?: number
 }
 
 export function Cart({ children }: Props) {
@@ -19,21 +21,35 @@ export function Cart({ children }: Props) {
 	)
 
 	const addToCart = React.useCallback(
-		(product: Product) => {
+		(item: { product: Product; color: number; subOption?: number }) => {
+			const { product, color, subOption } = item
 			if (!product.available) return
-			const cartItem = cartItems.find(item => item.product.id === product.id)
+
+			const cartItem = cartItems.find(
+				cartItem =>
+					cartItem.product.id === product.id &&
+					cartItem.color === color &&
+					cartItem.subOption === subOption
+			)
 			const quantity = cartItem ? cartItem.quantity + 1 : 1
 
 			const newCartItem = {
 				product,
 				quantity,
+				color,
+				subOption,
 				get value() {
 					return this.quantity * Number(this.product.price)
 				},
 			}
 
 			setCartItems([
-				...cartItems.filter(item => item.product.id !== product.id),
+				...cartItems.filter(
+					cartItem =>
+						cartItem.product.id !== product.id ||
+						cartItem.color !== color ||
+						cartItem.subOption !== subOption
+				),
 				newCartItem,
 			])
 		},
@@ -70,7 +86,11 @@ type Cart = {
 	cartItems: CartItem[]
 	cartQuantity: number
 	cartValue: number
-	addToCart: (product: Product) => void
+	addToCart: (item: {
+		product: Product
+		color: number
+		subOption?: number
+	}) => void
 }
 
 const CartContext = React.createContext<Cart>({

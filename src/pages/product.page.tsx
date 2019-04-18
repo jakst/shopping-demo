@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { match } from 'react-router'
 import styled, { css } from 'styled-components'
 import { getProductById, Product } from '../api/api'
 import { useCart } from '../cart/cart.context'
+import { OptionsSelector } from '../components/options-selector'
 
 type Props = {
 	match: match<{ id: string }>
@@ -13,13 +14,18 @@ export default function ProductPage({ match }: Props) {
 	const [product, setProduct] = React.useState<Product>()
 	const [error, setError] = React.useState(false)
 	const { addToCart } = useCart()
+	const [selectedOptions, setSelectedOptions] = useState({
+		color: 0,
+		subOption: 0,
+	})
 
 	const fetchProduct = React.useCallback(async () => {
 		setError(false)
 		const fetchedProduct = await getProductById(Number(productId))
 
-		if (fetchedProduct) setProduct(fetchedProduct)
-		else setError(true)
+		if (fetchedProduct) {
+			setProduct(fetchedProduct)
+		} else setError(true)
 	}, [productId])
 
 	React.useEffect(() => void fetchProduct(), [fetchProduct])
@@ -34,9 +40,18 @@ export default function ProductPage({ match }: Props) {
 			Manufacturer: {product.brand}
 			<br />
 			Weight: {product.weight} kg
-			<br />
+			<OptionsSelector
+				options={product.options}
+				selected={selectedOptions}
+				onChange={options =>
+					setSelectedOptions(previousOptions => ({
+						...previousOptions,
+						...options,
+					}))
+				}
+			/>
 			<AddToCart
-				onClick={() => addToCart(product)}
+				onClick={() => addToCart({ product, ...selectedOptions })}
 				disabled={!product.available}
 			>
 				{product.available ? 'In stock, buy now! 👍' : 'No stock left 👎'}
