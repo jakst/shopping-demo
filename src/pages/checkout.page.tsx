@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useCart } from '../cart/cart.context'
 
 export default function CheckoutPage() {
-	const { cartItems, cartValue, changeQuantity } = useCart()
+	const { cartItems, cartValue, changeQuantity, removeItem } = useCart()
 
 	if (!cartItems.length)
 		return (
@@ -27,37 +27,40 @@ export default function CheckoutPage() {
 
 				return (
 					<Item key={`${item.product.id}${color}${option}`}>
-						<div
-							style={{
-								width: 250,
-								display: 'flex',
-								flexDirection: 'column',
-							}}
-						>
-							<div style={{ fontWeight: 'bold' }}>{item.product.name}</div>
+						<div style={{ display: 'flex' }}>
+							<div style={{ width: 250, fontWeight: 'bold' }}>
+								{item.product.name}
+							</div>
+
+							<div style={{ width: 80, textAlign: 'right' }}>
+								{item.product.price} kr
+							</div>
+
+							<div style={{ width: 40, textAlign: 'center' }}>x</div>
+
+							<div>
+								<input
+									type="number"
+									min={1}
+									defaultValue={item.quantity.toString()}
+									style={{ width: 40, textAlign: 'right' }}
+									onChange={e => changeQuantity(index, Number(e.target.value))}
+								/>
+							</div>
+
+							<div
+								style={{ width: 80, textAlign: 'right', fontWeight: 'bold' }}
+							>
+								{item.value} kr
+							</div>
+						</div>
+						<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 							<div>
 								{color} {option && `, ${option}`}
 							</div>
-						</div>
-
-						<div style={{ width: 80, textAlign: 'right' }}>
-							{item.product.price} kr
-						</div>
-
-						<div style={{ width: 40, textAlign: 'center' }}>x</div>
-
-						<div>
-							<input
-								type="number"
-								min={1}
-								defaultValue={item.quantity.toString()}
-								style={{ width: 40, textAlign: 'right' }}
-								onChange={e => changeQuantity(index, Number(e.target.value))}
-							/>
-						</div>
-
-						<div style={{ width: 80, textAlign: 'right', fontWeight: 'bold' }}>
-							{item.value} kr
+							<div>
+								<button onClick={() => removeItem(index)}>Remove</button>
+							</div>
 						</div>
 					</Item>
 				)
@@ -80,6 +83,7 @@ const Wrapper = styled.div`
 const Item = styled.div`
 	display: flex;
 	justify-content: space-between;
+	flex-direction: column;
 	margin-bottom: 16px;
 `
 
