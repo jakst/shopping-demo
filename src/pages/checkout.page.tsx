@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useCart } from '../cart/cart.context'
 
 export default function CheckoutPage() {
-	const { cartItems, cartValue } = useCart()
+	const { cartItems, cartValue, changeQuantity } = useCart()
 
 	if (!cartItems.length)
 		return (
@@ -17,7 +17,7 @@ export default function CheckoutPage() {
 
 	return (
 		<Wrapper>
-			{cartItems.map(item => {
+			{cartItems.map((item, index) => {
 				const { color, subOption } = item.product.options[item.color]
 				const option =
 					(subOption &&
@@ -27,11 +27,28 @@ export default function CheckoutPage() {
 
 				return (
 					<Item key={`${item.product.id}${color}${option}`}>
-						<div>
+						<div style={{ width: 250 }}>
 							{item.product.name}, {color} {option && `, ${option}`}
 						</div>
+
+						<div style={{ width: 80, textAlign: 'right' }}>
+							{item.product.price} kr
+						</div>
+
+						<div style={{ width: 40, textAlign: 'center' }}>x</div>
+
 						<div>
-							{item.quantity} x {item.product.price} = {item.value} kr
+							<input
+								type="number"
+								min={1}
+								defaultValue={item.quantity.toString()}
+								style={{ width: 40, textAlign: 'right' }}
+								onChange={e => changeQuantity(index, Number(e.target.value))}
+							/>
+						</div>
+
+						<div style={{ width: 80, textAlign: 'right', fontWeight: 'bold' }}>
+							{item.value} kr
 						</div>
 					</Item>
 				)

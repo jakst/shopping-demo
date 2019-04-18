@@ -56,6 +56,27 @@ export function Cart({ children }: Props) {
 		[cartItems]
 	)
 
+	const changeQuantity = React.useCallback(
+		(index: number, quantity: number) => {
+			if (index < 0 || index >= cartItems.length)
+				throw new Error('Item not in cart')
+
+			const newCartItem = {
+				...cartItems[index],
+				product: cartItems[index].product,
+				quantity,
+				get value() {
+					return this.quantity * Number(this.product.price)
+				},
+			}
+			const newCartItems = [...cartItems]
+			newCartItems[index] = newCartItem
+
+			setCartItems(newCartItems)
+		},
+		[cartItems]
+	)
+
 	const [cartQuantity, cartValue] = React.useMemo(
 		() =>
 			cartItems.reduce(
@@ -75,6 +96,7 @@ export function Cart({ children }: Props) {
 				cartQuantity,
 				cartValue,
 				addToCart,
+				changeQuantity,
 			}}
 		>
 			{children}
@@ -91,6 +113,7 @@ type Cart = {
 		color: number
 		subOption?: number
 	}) => void
+	changeQuantity: (index: number, quantity: number) => void
 }
 
 const CartContext = React.createContext<Cart>({
@@ -98,6 +121,7 @@ const CartContext = React.createContext<Cart>({
 	cartQuantity: 0,
 	cartValue: 0,
 	addToCart: () => {},
+	changeQuantity: () => {},
 })
 
 export const useCart = () => React.useContext(CartContext)
