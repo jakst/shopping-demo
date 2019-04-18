@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { match } from 'react-router'
 import styled, { css } from 'styled-components'
 import { getProductById, Product } from '../api/api'
@@ -13,11 +13,17 @@ export default function ProductPage({ match }: Props) {
 	const productId = match.params.id
 	const [product, setProduct] = React.useState<Product>()
 	const [error, setError] = React.useState(false)
+	const [adding, setAdding] = React.useState(false)
 	const { addToCart } = useCart()
-	const [selectedOptions, setSelectedOptions] = useState({
+	const [selectedOptions, setSelectedOptions] = React.useState({
 		color: 0,
 		subOption: 0,
 	})
+
+	useEffect(() => {
+		const timer = setTimeout(() => setAdding(false), Math.random() * 800 + 700)
+		return () => clearTimeout(timer)
+	}, [adding])
 
 	const fetchProduct = React.useCallback(async () => {
 		setError(false)
@@ -51,10 +57,15 @@ export default function ProductPage({ match }: Props) {
 				}
 			/>
 			<AddToCart
-				onClick={() => addToCart({ product, ...selectedOptions })}
-				disabled={!product.available}
+				onClick={() => {
+					setAdding(true)
+					addToCart({ product, ...selectedOptions })
+				}}
+				disabled={!product.available || adding}
 			>
-				{product.available ? 'In stock, buy now! 👍' : 'No stock left 👎'}
+				{adding && 'Adding to cart...'}
+				{!adding &&
+					(product.available ? 'In stock, buy now! 👍' : 'No stock left 👎')}
 			</AddToCart>
 		</Wrapper>
 	)
