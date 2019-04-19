@@ -51,7 +51,7 @@ export default function CheckoutPage() {
 							<div
 								style={{ width: 80, textAlign: 'right', fontWeight: 'bold' }}
 							>
-								{item.value} kr
+								{item.quantity * Number(item.product.price)} kr
 							</div>
 						</div>
 						<div style={{ display: 'flex', justifyContent: 'space-between' }}>

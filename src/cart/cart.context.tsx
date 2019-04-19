@@ -9,7 +9,6 @@ type Props = {
 type CartItem = {
 	product: Product
 	quantity: number
-	value: number
 	color: number
 	subOption?: number
 }
@@ -38,9 +37,6 @@ export function Cart({ children }: Props) {
 				quantity,
 				color,
 				subOption,
-				get value() {
-					return this.quantity * Number(this.product.price)
-				},
 			}
 
 			setCartItems([
@@ -63,11 +59,7 @@ export function Cart({ children }: Props) {
 
 			const newCartItem = {
 				...cartItems[index],
-				product: cartItems[index].product,
 				quantity,
-				get value() {
-					return this.quantity * Number(this.product.price)
-				},
 			}
 			const newCartItems = [...cartItems]
 			newCartItems[index] = newCartItem
@@ -95,7 +87,7 @@ export function Cart({ children }: Props) {
 			cartItems.reduce(
 				(previous, item) => [
 					previous[0] + item.quantity,
-					previous[1] + item.value,
+					previous[1] + item.quantity * item.product.price,
 				],
 				[0, 0]
 			),

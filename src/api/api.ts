@@ -17,7 +17,7 @@ export type Product = {
 	id: number
 	name: string
 	brand: string
-	price: string
+	price: number
 	available: boolean
 	weight: number
 	options: Option[]
@@ -37,6 +37,7 @@ export async function getProductById(id: number) {
 function mapper(product) {
 	return {
 		...product,
+		price: Number(product.price),
 		options: product.options.map(option => {
 			const mainOptions = {
 				quantity: option.quantity,
