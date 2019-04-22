@@ -25,6 +25,8 @@ export default function CheckoutPage() {
 						`${subOption.values[item.subOption]} ${subOption.suffix}`) ||
 					''
 
+				const rowId = `${item.product.id}-${item.color}-${item.subOption}`
+
 				return (
 					<Item key={`${item.product.id}${color}${option}`}>
 						<div style={{ display: 'flex' }}>
@@ -45,11 +47,13 @@ export default function CheckoutPage() {
 									defaultValue={item.quantity.toString()}
 									style={{ width: 40, textAlign: 'right' }}
 									onChange={e => changeQuantity(index, Number(e.target.value))}
+									data-testid={`line-quantity-${rowId}`}
 								/>
 							</div>
 
 							<div
 								style={{ width: 80, textAlign: 'right', fontWeight: 'bold' }}
+								data-testid={`line-sum-${rowId}`}
 							>
 								{item.quantity * Number(item.product.price)} kr
 							</div>
@@ -59,14 +63,19 @@ export default function CheckoutPage() {
 								{color} {option && `, ${option}`}
 							</div>
 							<div>
-								<button onClick={() => removeItem(index)}>Remove</button>
+								<button
+									onClick={() => removeItem(index)}
+									title={`Remove ${item.product.name} ${color} ${option}`}
+								>
+									Remove
+								</button>
 							</div>
 						</div>
 					</Item>
 				)
 			})}
 
-			<Sum>Total: {cartValue} kr</Sum>
+			<Sum data-testid="cart-total">Total: {cartValue} kr</Sum>
 		</Wrapper>
 	)
 }
