@@ -27,7 +27,7 @@ describe('Main page', () => {
 					available: true,
 					name: 'Headphones',
 					brand: 'Sony',
-					price: '2499',
+					price: 2499,
 					weight: 0.5,
 					options: [
 						{ color: 'black', quantity: 12 },
@@ -39,7 +39,7 @@ describe('Main page', () => {
 					available: true,
 					name: 'TV',
 					brand: 'Samsung',
-					price: '7990',
+					price: 7990,
 					weight: 14.0,
 					options: [{ color: 'black', quantity: 12 }],
 				},
